@@ -1,61 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FirstProject
+﻿using CommonBasicStandardLibraries.AdvancedGeneralFunctionsAndProcesses.BasicExtensions;
+using CommonBasicStandardLibraries.AdvancedGeneralFunctionsAndProcesses.Misc;
+using CommonBasicStandardLibraries.BasicDataSettingsAndProcesses;
+using CommonBasicStandardLibraries.CollectionClasses;
+using System;
+namespace SecomdLibrary
 {
-    //first sample.
-    public class cCodeTracking
+    public class CodeTracking : ICodeTracking
     {
-        readonly IList<cCodeTrackingStruct> xItems = new List<cCodeTrackingStruct>();
-
-        public void Add(String Description, eRelation Relation = eRelation.ToFunction)
+        readonly CustomBasicList<TrackingModel> _xItems = new();
+        public void Add(string description, EnumRelation relation = EnumRelation.ToFunction)
         {
-            cCodeTrackingStruct xItem = new cCodeTrackingStruct
+            TrackingModel xItem = new TrackingModel
             {
-                _Date = DateTime.Now,
-                _Description = Description,
-                _Relation = Relation,
-                _Method = cStackTrace.Get_MethodName(cStackTrace.eMethodDetail.WithClass, 2)
+                Date = DateTime.Now,
+                Description = description,
+                Relation = relation,
+                Method = CustomStackTrace.GetMethodName(CustomStackTrace.EnumMethodDetail.WithClass, 2)
             };
-            xItems.Add(xItem);
-
+            _xItems.Add(xItem);
         }
 
-        public String Display()
-        {
-            String xDisplay = "";
-            foreach (cCodeTrackingStruct xItem in xItems)
-            {
-                xDisplay += $"{xItem._Date}  {xItem._Method}  {xItem._Description}";
-                xDisplay += Environment.NewLine;
-            }
-            return xDisplay;
-        }
+        public CustomBasicList<TrackingModel> GetTrackingData => _xItems.ToCustomBasicList(); //so i can use blazor to display it.
 
+        //public string Display()
+        //{
+        //    StrCat cats = new();
+        //    foreach (var xItem in _xItems)
+        //    {
+        //        cats.AddToString($"{xItem.Date} {xItem.Method} {xItem.Description}", Constants.vbCrLf);
+        //    }
+        //    string output = cats.GetInfo();
+        //    return output;
+        //}
         public void Clear()
         {
-            xItems.Clear();
+            _xItems.Clear();
         }
     }
-
-
-    class cCodeTrackingStruct
-    {
-        public DateTime _Date { get; set; }
-        public String _Description { get; set; }
-        public eRelation _Relation { get; set; }
-        public String _Method { get; set; }
-    }
-
-    public enum eRelation
-    {
-        Absolute = 1,
-        ToFunction = 2,
-        ToPrevious = 3,
-        ToItem = 4
-    }
-
 }

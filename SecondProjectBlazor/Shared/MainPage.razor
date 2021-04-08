@@ -1,0 +1,15 @@
+﻿@if (_tracks.Count == 0)
+{
+    <p>Loading Content.....</p>
+    return;
+}
+Results Of Sample Is
+<div>
+    @foreach (var item in _tracks)
+    {
+        // xDisplay += $"{xItem._Date}  {xItem._Method}  {xItem._Description}";
+		 <div>
+             @item.Date @item.Method @item.Description
+         </div>
+	}
+</div>

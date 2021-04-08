@@ -1,39 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FirstProject
+namespace SecomdLibrary
 {
-    public class cStackTrace
+    public class CustomStackTrace
     {
-        public enum eMethodDetail
+        public enum EnumMethodDetail
         {
             OnlyMethodName = 1,
             WithClass = 2
         }
 
-        public static string Get_MethodName(eMethodDetail MethodDetail, int Level = 1)
+        public static string GetMethodName(EnumMethodDetail methodDetail, int level = 1)
         {
             StackTrace st = new();
-            StackFrame sf = st.GetFrame(Level);
-
+            StackFrame sf = st.GetFrame(level);
             string xClassName = "";
             string[] xSplit = sf.GetMethod().ReflectedType.ToString().Split('.', StringSplitOptions.RemoveEmptyEntries);
             if (xSplit.Length >= 1)
-                xClassName = xSplit[1];
-
-            string xMethodName = sf.GetMethod().Name;
-
-            switch (MethodDetail)
             {
-                case eMethodDetail.OnlyMethodName: { return xMethodName; }
-                case eMethodDetail.WithClass: { return xClassName + "." + xMethodName; }
+                xClassName = xSplit[1];
+            }
+            string xMethodName = sf.GetMethod().Name;
+            switch (methodDetail)
+            {
+                case EnumMethodDetail.OnlyMethodName: { return xMethodName; }
+                case EnumMethodDetail.WithClass: { return xClassName + "." + xMethodName; }
                 default: { return null; }
             }
-
         }
     }
 }
