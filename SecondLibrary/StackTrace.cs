@@ -9,7 +9,6 @@ namespace SecomdLibrary
             OnlyMethodName = 1,
             WithClass = 2
         }
-
         public static string GetMethodName(EnumMethodDetail methodDetail, int level = 1)
         {
             StackTrace st = new();
