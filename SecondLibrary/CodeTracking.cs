@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FirstProject
 {
+    //first sample.
     public class cCodeTracking
     {
         readonly IList<cCodeTrackingStruct> xItems = new List<cCodeTrackingStruct>();
