@@ -17,6 +17,7 @@ namespace SecondProjectBlazor.Shared
             await Article.FirstInitAsync();
             await Article.LoadAsync();
             _tracks = Tracks.GetTrackingData;
+            Tracks.Process();
         }
 
     }
