@@ -13,7 +13,7 @@ namespace SecomdLibrary
         readonly DateTime _StartDate = DateTime.Now;
 
         readonly CustomBasicList<TrackingModel> _Items = new();
-        readonly CustomBasicList<TrackingFuncModel> _Funcs = new();
+        readonly CustomBasicList<TrackingMethodModel> _Methods = new();
 
         public void Add(string description, EnumRelation relation = EnumRelation.ToMethod)
         {
@@ -29,25 +29,25 @@ namespace SecomdLibrary
             _Items.Add(xNewItem);
         }
 
-        public void AddFunction()
+        public void AddMethod()
         {
             string xMethod = CustomStackTrace.GetMethodName(CustomStackTrace.EnumMethodDetail.WithClass, 5);
-            TrackingFuncModel tmpFunc = _Funcs.FirstOrDefault(x => x.Method == xMethod);
-            if (tmpFunc is null)
+            TrackingMethodModel tmpMethod = _Methods.FirstOrDefault(x => x.Method == xMethod);
+            if (tmpMethod is null)
             {
-                TrackingFuncModel xNewFunc = new()
+                TrackingMethodModel xNewMethod = new()
                 {
                     Date = DateTime.Now,
                     Method = xMethod
                 };
-                xNewFunc.Counter += 1;
+                xNewMethod.Counter += 1;
 
-                _Funcs.Add(xNewFunc);
+                _Methods.Add(xNewMethod);
             }
             else
             {
-                tmpFunc.Date = DateTime.Now;
-                tmpFunc.Counter += 1;
+                tmpMethod.Date = DateTime.Now;
+                tmpMethod.Counter += 1;
             }
         }
 
@@ -66,9 +66,9 @@ namespace SecomdLibrary
                         break;
 
                     case EnumRelation.ToMethod:
-                        TrackingFuncModel tmpFunc = _Funcs.FirstOrDefault(x => x.Method == xItem.Method);
-                        if (tmpFunc == null) { throw new Exception("Method not found."); }
-                        xItem.TimeSpan = tmpFunc.Date - xItem.Date;
+                        TrackingMethodModel tmpMethod = _Methods.FirstOrDefault(x => x.Method == xItem.Method);
+                        if (tmpMethod == null) { throw new Exception("Method not found."); }
+                        xItem.TimeSpan = tmpMethod.Date - xItem.Date;
                         break;
 
                     case EnumRelation.ToPrevious:

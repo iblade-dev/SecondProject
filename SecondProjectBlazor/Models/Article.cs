@@ -15,7 +15,7 @@ namespace SecondProjectBlazor.Models
 
         public async Task FirstInitAsync()
         {
-            _tracking.AddFunction();
+            _tracking.AddMethod();
 
             await Task.Delay(100);
             _tracking.Add("Constructor");
@@ -23,7 +23,7 @@ namespace SecondProjectBlazor.Models
 
         public async Task LoadAsync()
         {
-            _tracking.AddFunction();
+            _tracking.AddMethod();
 
             await Task.Delay(200); //pretend its doing for 200 milliseconds.
             _tracking.Add("Load");
@@ -31,7 +31,7 @@ namespace SecondProjectBlazor.Models
         }
         public async Task RefreshDataAsync()
         {
-            _tracking.AddFunction();
+            _tracking.AddMethod();
 
             await Task.Delay(50);
             _tracking.Add("Get Auxiliary tables");
@@ -42,7 +42,7 @@ namespace SecondProjectBlazor.Models
         }
         private async Task OperationAAsync()
         {
-            _tracking.AddFunction();
+            _tracking.AddMethod();
 
             await Task.Delay (10);
             _tracking.Add("Operation A.1", EnumRelation.ToPrevious);
