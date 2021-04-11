@@ -7,8 +7,9 @@ Results Of Sample Is
 <div>
     @foreach (var item in _tracks)
     {
-		 <div>
-             @item.Date @item.Method @item.Description
-         </div>
+    <div>
+        @*@item.Date @item.Method @item.Description*@
+        @item.Output
+    </div>
 	}
 </div>

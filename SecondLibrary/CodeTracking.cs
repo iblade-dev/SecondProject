@@ -5,6 +5,7 @@ using CommonBasicStandardLibraries.CollectionClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace SecomdLibrary
 {
@@ -15,30 +16,42 @@ namespace SecomdLibrary
         readonly CustomBasicList<TrackingModel> _Items = new();
         readonly CustomBasicList<TrackingMethodModel> _Methods = new();
 
-        public void Add(string description, EnumRelation relation = EnumRelation.ToMethod)
+        public void Add(string description, EnumRelation relation = EnumRelation.ToMethod, [CallerMemberName] string CallerMemberName = "")
         {
-            string xMethod = CustomStackTrace.GetMethodName(CustomStackTrace.EnumMethodDetail.WithClass,5);
+            if (string.IsNullOrEmpty(description)) { throw new ArgumentNullException(nameof(description)); }
 
-            TrackingModel xNewItem = new()
+            //string xMethod = CustomStackTrace.GetMethodName(CustomStackTrace.EnumMethodDetail.WithClass,5);
+
+            TrackingModel tmpItem = _Items.FirstOrDefault(x => x.Method == CallerMemberName && x.Description == description);
+            if (tmpItem is null)
             {
-                Date = DateTime.Now,
-                Description = description,
-                Relation = relation,
-                Method = xMethod
-            };
-            _Items.Add(xNewItem);
+                TrackingModel xNewItem = new()
+                {
+                    Date = DateTime.Now,
+                    Description = description,
+                    Relation = relation,
+                    Method = CallerMemberName
+                };
+                _Items.Add(xNewItem);
+            }
+            else
+            {
+                tmpItem.Counter += 1;
+                tmpItem.Date = DateTime.Now;
+            }
         }
 
-        public void AddMethod()
+        public void AddMethod([CallerMemberName] string CallerMemberName = "")
         {
-            string xMethod = CustomStackTrace.GetMethodName(CustomStackTrace.EnumMethodDetail.WithClass, 5);
-            TrackingMethodModel tmpMethod = _Methods.FirstOrDefault(x => x.Method == xMethod);
+            //string xMethod = CustomStackTrace.GetMethodName(CustomStackTrace.EnumMethodDetail.WithClass, 5);
+
+            TrackingMethodModel tmpMethod = _Methods.FirstOrDefault(x => x.Method == CallerMemberName);
             if (tmpMethod is null)
             {
                 TrackingMethodModel xNewMethod = new()
                 {
                     Date = DateTime.Now,
-                    Method = xMethod
+                    Method = CallerMemberName
                 };
                 xNewMethod.Counter += 1;
 
@@ -68,12 +81,12 @@ namespace SecomdLibrary
                     case EnumRelation.ToMethod:
                         TrackingMethodModel tmpMethod = _Methods.FirstOrDefault(x => x.Method == xItem.Method);
                         if (tmpMethod == null) { throw new Exception("Method not found."); }
-                        xItem.TimeSpan = tmpMethod.Date - xItem.Date;
+                        xItem.TimeSpan = xItem.Date - tmpMethod.Date;
                         break;
 
                     case EnumRelation.ToPrevious:
                         TrackingModel tmpItem = _Items[_Items.IndexOf(xItem) - 1];
-                        xItem.TimeSpan = tmpItem.Date - xItem.Date;
+                        xItem.TimeSpan = xItem.Date - tmpItem.Date;
                         break;
 
                     case EnumRelation.ToItem:
